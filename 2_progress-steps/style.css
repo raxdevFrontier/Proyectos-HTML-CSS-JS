@@ -1,0 +1,115 @@
+/*@import url("https://fonts.googleapis.com/css?family=Muli&display=swap");*/
+@import url("https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap");
+
+:root {
+	--line-border-color-empty: #e0e0e0;
+	--line-border-color-active: #800080;
+}
+* {
+	box-sizing: border-box;
+}
+
+body {
+	font-family: "Roboto", sans-serif;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	height: 100vh;
+	overflow: hidden;
+	margin: 0;
+}
+
+.container {
+	/* background-color: lightgrey; */
+	display: flex;
+	/*height: 200px;
+	width: 400px;*/
+	flex-direction: column;
+	/*align-items: center;
+	justify-content: center;*/
+	gap: 2rem;
+	text-align: center;
+}
+.progress-container {
+	display: flex;
+	/* align-items: center; */
+	justify-content: space-between;
+	position: relative; /*posicion relativa para poder poner otros objetos dentro del "progress-container" mediante la poscion absoluta con repecto a este ultimo elmento padre*/
+	max-width: 100%;
+	width: 350px;
+}
+
+.progress-container::before {
+	content: ""; /*Cuando usamos los ::after o ::before hay que especificar un content (en este caso un algo vacio*/
+	background-color: var(--line-border-color-empty);
+	position: absolute; /*posicion absoluta respecto al contenedor (progress-container)*/
+	top: 50%; /*Desplazamos 50% con respecto del top para centrar a linea en la mitad de la altura*/
+	left: 0; /*Desplazamos 0 desde la izquierda para empezar al principio de la izquierda*/
+	height: 4px;
+	width: 100%;
+	z-index: -1;
+	transform: translateY(-50%);
+}
+.progress-line {
+	/* border-bottom: 2px solid #800080; */
+	background-color: var(--line-border-color-active);
+	/* width: 3rem; */
+	position: absolute; /*posicion absoluta respecto al contenedor (progress-container)*/
+	top: 50%; /*Desplazamos 50% con respecto del top para centrar a linea en la mitad de la altura*/
+	left: 0; /*Desplazamos 0 desde la izquierda para empezar al principio de la izquierda*/
+	transform: translateY(-50%);
+	height: 4px;
+	width: 0%;
+	z-index: -1;
+	transition: 0.4s ease;
+}
+.step {
+	/* background-color: rgb(199, 128, 199); */
+	background-color: #fff;
+	/* border: 2px solid purple; */
+	border: 3px solid var(--line-border-color-empty);
+	width: 30px;
+	height: 30px;
+	border-radius: 50%;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	transition: 0.4s ease;
+}
+
+.step.active {
+	border-color: var(--line-border-color-active);
+}
+
+button {
+	/* font-family: "Roboto", sans-serif; */
+	font-family: inherit;
+	background-color: var(--line-border-color-active);
+	color: #fff;
+	border: 0;
+	border-radius: 5px;
+	cursor: pointer;
+	padding: 8px 30px;
+	margin: 5px;
+	font-size: 14px;
+}
+
+.btn-box {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	gap: 2rem;
+}
+
+button:active {
+	transform: scale(0.95);
+}
+
+button:focus {
+	outline: 0;
+}
+
+button:disabled {
+	background-color: var(--line-border-color-empty);
+	cursor: not-allowed;
+}
