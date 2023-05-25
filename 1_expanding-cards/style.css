@@ -1,0 +1,65 @@
+/* @import url("https://fonts.googleapis.com/css?family=Muli&display=swap"); */
+@import url("https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap");
+* {
+	box-sizing: border-box;
+}
+
+body {
+	font-family: "Roboto", sans-serif;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	height: 100vh;
+	overflow: hidden;
+	margin: 0;
+}
+
+.container {
+	display: flex;
+	/*Dado que ahora el contentedor es tiene un display flex, cualquier hijo immediato 
+	se colocará horizontlmente en una fila*/
+	width: 90vw;
+}
+
+.panel {
+	background-size: cover;
+	background-position: center;
+	background-repeat: no-repeat;
+	height: 80vh;
+	border-radius: 40px;
+	color: #fff;
+	cursor: pointer;
+	flex: 0.5; /*La propiedad CSS flex es una propiedad resumida que indica la capacidad de un elemento flexible para alterar sus dimensiones y llenar el espacio disponible. */
+	/*La propiedad 'flex' es la que cambiamos en la clase activa, para expandirla con repecto de las otras*/
+	margin: 10px;
+	position: relative; /*Dado que queremos que el H3 sea absoluto, el padre (.panel) tiene que ser relative*/
+	/* transition: all 2000ms ease; */
+	transition: flex 1000ms ease;
+}
+
+.panel h3 {
+	position: absolute;
+	bottom: 1.5rem;
+	left: 2rem;
+	margin: 0;
+	opacity: 0; /*Ocultamos los H3, y luego los mostramos en cuando el panel este activo*/
+}
+
+.panel.active {
+	flex: 6;
+}
+.panel.active h3 {
+	opacity: 1;
+}
+
+/*Se define una MediaQuery para establecer que cuando la pantalla sea menor a 500px */
+@media (max-width: 1000px) {
+	.container {
+		width: 100vh;
+	}
+
+	.panel:nth-of-type(4),
+	.panel:nth-of-type(5) {
+		display: none;
+	}
+}
