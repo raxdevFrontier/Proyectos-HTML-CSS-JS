@@ -13,7 +13,7 @@ btn.addEventListener("click", () => {
 	isFocus = !isFocus
 
 	console.log(isFocus)
-	if (isFocus == true) {
+	if (isFocus) {
 		input.focus()
 	} else {
 		input.blur()
