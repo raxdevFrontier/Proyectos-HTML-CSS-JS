@@ -45,6 +45,10 @@ body {
 	transition: transform 0.5s linear;
 }
 
+.container.show-nav .circle {
+	transform: rotate(-70deg);
+}
+
 .circle button {
 	cursor: pointer;
 	position: absolute;
@@ -70,6 +74,12 @@ body {
 	transform-origin: top left;
 }
 
+.container.show-nav + nav li {
+	/*Aqui establim els estils dels li de la nav, en quan el div.container té la classe .show-nav per rotar el contingut i deixar veure la nav*/
+	transform: translateX(0); /*traslladem fins al punt X = 0 per a que es vegi la nav*/
+	transition-delay: 0.3s;
+}
+
 nav {
 	position: fixed;
 	bottom: 40px;
@@ -84,20 +94,24 @@ nav ul {
 
 nav ul li {
 	color: #fff;
-	margin: 40px 0;
-	/* transform: translateX(-100px); */
+	margin: 30px 0;
+	transform: translateX(-100%);
 	transition: transform 0.4s ease-in;
 }
-nav ul li i {
-	font-size: 15px;
+nav ul li i::before {
 	margin-right: 10px;
+}
+nav ul li i {
+	font-size: 13px;
 }
 nav ul li + li {
 	/*S'apunta al 2 li dins de ul*/
 	margin-left: 10px;
+	transform: translateX(-150%);
 }
 nav ul li + li + li {
 	margin-left: 20px; /*cal posar el doble de margin respecte al li anterior*/
+	transform: translateX(-200%);
 }
 
 .content {
