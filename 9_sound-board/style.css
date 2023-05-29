@@ -1,0 +1,36 @@
+/*@import url("https://fonts.googleapis.com/css?family=Muli&display=swap");*/
+@import url("https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap");
+* {
+	box-sizing: border-box;
+}
+
+body {
+	font-family: "Roboto", sans-serif;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	height: 100vh;
+	overflow: hidden;
+	margin: 0;
+	background-color: darkkhaki;
+}
+
+.btn {
+	background-color: gold;
+	border-radius: 10px;
+	border: none;
+	margin: 1rem;
+	padding: 1.5rem 3rem;
+	font-size: 1.2rem;
+}
+
+.btn:hover {
+	opacity: 0.8;
+}
+.btn:focus {
+	outline: none;
+}
+
+.btn:active {
+	transform: scale(0.95);
+}
