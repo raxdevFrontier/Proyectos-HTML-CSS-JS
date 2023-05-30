@@ -1,19 +1,24 @@
 const jokeElement = document.getElementById("joke")
 const jokeBtn = document.getElementById("jokeBtn")
 
-generateJoke()
+jokeBtn.addEventListener("click", generateJoke)
+// generateJoke()
 
-function generateJoke() {
+async function generateJoke() {
+	const url = "https://icanhazdadjoke.com"
 	const config = {
-		header: {
+		method: "GET",
+		headers: {
 			Accept: "application/json",
 		},
 	}
 
-	fetch(`https://icanhazdadjoke.com`, config)
-		.then((response) => response.json())
-		.then((data) => {
-			console.log(data)
-			// jokeElement.innerHTML = data.joke
-		})
+	try {
+		const response = await fetch(url, config)
+		const data = await response.json()
+		// console.log(data.joke)
+		jokeElement.innerHTML = data.joke
+	} catch (error) {
+		console.error(error)
+	}
 }
