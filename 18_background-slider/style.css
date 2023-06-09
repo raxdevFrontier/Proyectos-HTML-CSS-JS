@@ -1,5 +1,6 @@
 /*@import url("https://fonts.googleapis.com/css?family=Muli&display=swap");*/
 @import url("https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap");
+
 * {
 	box-sizing: border-box;
 }
@@ -12,7 +13,8 @@ body {
 	height: 100vh;
 	overflow: hidden;
 	margin: 0;
-	background-image: url("https://images.unsplash.com/photo-1549880338-65ddcdfd017b?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=2100&q=80");
+	/* Hardcodeamos la imagen de fodo, que ponemos luego en el JS */
+	/* background-image: url("https://images.unsplash.com/photo-1549880338-65ddcdfd017b?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=2100&q=80"); */
 	background-position: center center;
 	background-size: cover;
 	transition: 0.4s;
@@ -37,7 +39,7 @@ body::before {
 	overflow: hidden;
 }
 
-.silde {
+.slide {
 	opacity: 0;
 	height: 100vh;
 	width: 100vw;
@@ -47,7 +49,7 @@ body::before {
 	top: -15vh;
 	left: -15vw;
 	transition: 0.4s ease;
-	z-index: 1;
+	z-index: 3;
 }
 
 .slide.active {
@@ -66,7 +68,7 @@ body::before {
 	cursor: pointer;
 }
 
-.arr .left-arrow {
+.left-arrow {
 	left: calc(15vw - 65px);
 }
 .right-arrow {
