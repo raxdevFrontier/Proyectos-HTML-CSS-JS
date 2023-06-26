@@ -1,0 +1,62 @@
+/*@import url("https://fonts.googleapis.com/css?family=Muli&display=swap");*/
+@import url("https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap");
+
+* {
+	box-sizing: border-box;
+}
+
+body {
+	background-color: darksalmon;
+	font-family: "Roboto", sans-serif;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+	height: 100vh;
+	overflow: hidden;
+	margin: 0;
+}
+
+.container {
+	position: absolute;
+	bottom: 20px;
+	background: rgba(0, 0, 0, 0.1);
+	padding: 10px 20px;
+	font-size: 18px;
+	margin: 10px 0;
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
+	align-items: center;
+	height: 120px;
+	width: 500px;
+}
+
+.container input {
+	font-size: 18px;
+	border: none;
+	text-align: center;
+	padding: 5px;
+	border-radius: 10px;
+}
+.container #speed {
+	width: 50px;
+	background-color: darksalmon;
+	margin-left: 15px;
+}
+
+.container #newText {
+	width: 400px;
+	background-color: rgb(252, 186, 164);
+	margin-bottom: 8px;
+	border: 2px solid rgb(187, 119, 97);
+}
+
+.container #newText::placeholder {
+	color: #444444d3;
+	font-size: 15px;
+}
+
+input:focus {
+	outline: none;
+}
