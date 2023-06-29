@@ -46,8 +46,8 @@ clipboardEl.addEventListener("click", () => {
 	}
 	navigator.clipboard
 		.writeText(password)
-		.then(alert("Password copied to clipboard!"))
-		.catch(alert("Error copying password"))
+		.then(() => alert("Password copied to clipboard!"))
+		.catch((err) => alert("Error in copying password: ", err))
 })
 
 generateEl.addEventListener("click", () => {
@@ -80,8 +80,11 @@ function generatePass(lower, upper, number, symbol, length) {
 	}
 
 	const finalPass = generatedPass.slice(0, length)
-	return finalPass
+	const arrUndorderedPass = [...finalPass]
+	const undorderedPass = arrUndorderedPass.sort(() => Math.random() - 0.5).join("")
+	return undorderedPass
 }
+
 function getRandomLower() {
 	/* Math.random() * (max - min) + min; 
     el codigo anterior devuelve un número aleatorio situado entre dos valores específicos. 
