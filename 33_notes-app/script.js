@@ -1,6 +1,11 @@
 const addBtn = document.getElementById("add")
 
 const notes = JSON.parse(localStorage.getItem("notes"))
+/* 
+    localStorage => permanecera en el navegador hasta que se borre 
+    sessionStorage => permanecera en el navegador hasta que se cierre este
+    */
+// const notes = JSON.parse(sessionStorage.getItem("notes"))
 
 if (notes) {
 	notes.forEach((note) => addNewNote(note))
