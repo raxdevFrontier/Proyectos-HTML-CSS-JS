@@ -1,0 +1,40 @@
+/*@import url("https://fonts.googleapis.com/css?family=Muli&display=swap");*/
+@import url("https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap");
+
+* {
+	box-sizing: border-box;
+}
+
+body {
+	background-color: hsl(0, 0%, 7%);
+
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	height: 100vh;
+	overflow: hidden;
+	margin: 0;
+}
+
+.container {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	flex-wrap: wrap;
+	max-width: 400px; /*amb aixo fem establim l'amplada maxima de manera que si en el 'container' es mes ampli, faci wrap dels 'square'*/
+}
+
+.square {
+	background-color: #1d1d1d;
+	box-shadow: 0 0 2px #000;
+	height: 16px;
+	width: 16px;
+	margin: 2px;
+	transition: 2s ease;
+}
+
+.square:hover {
+	/*d'aquesta manera fem que la transicio sigui instantania al fer hover
+    y al sortir s'esfumará en transició amb el 2s establerts abans*/
+	transition-duration: 0s;
+}
