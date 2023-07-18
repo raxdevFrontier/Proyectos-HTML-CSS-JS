@@ -12,9 +12,10 @@ body {
 	display: flex;
 	flex-direction: column;
 	align-items: center;
-	justify-content: center;
-	height: 100vh;
+	justify-content: flex-start; /* uso flex-start para que el contenido se alinee en la parte superior del contenedor en lugar de centrarse verticalmente*/
+	min-height: 100vh; /*uso min-height con el valor 100vh para asegurarnos de que el contenedor tenga al menos el 100% del alto de la ventana del navegador.*/
 	margin: 0;
+	overflow-y: auto;
 }
 
 h1 {
@@ -48,7 +49,7 @@ h1 {
 }
 
 .pokemon .img-container img {
-	max-width: 90%; /*Aqui declarem que la img sigui un 90% d'ample de l'amplada total del contenedor*/
+	max-width: 80%; /*Aqui declarem que la img sigui un 80% d'ample de l'amplada total del contenedor*/
 	margin-top: 20px;
 }
 
@@ -57,7 +58,7 @@ h1 {
 }
 
 .pokemon .info .number {
-	background-color: rgba(0, 0, 0, 0.1);
+	background-color: rgb(212, 212, 212);
 	padding: 5px 10px;
 	border-radius: 10px;
 	font-size: 0.8rem;
