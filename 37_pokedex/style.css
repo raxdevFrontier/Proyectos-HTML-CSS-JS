@@ -58,10 +58,22 @@ h1 {
 }
 
 .pokemon .info .number {
-	background-color: rgb(212, 212, 212);
+	/* background-color: rgb(212, 212, 212); */
+	background-color: #ffff;
 	padding: 5px 10px;
 	border-radius: 10px;
 	font-size: 0.8rem;
+}
+.pokemon .info .type span {
+	padding: 5px 10px;
+	border: solid 1px gray;
+	border-radius: 10px;
+	font-size: 0.9rem;
+	filter: brightness(85%);
+}
+
+.pokemon .info .type p {
+	margin-top: 15px;
 }
 
 .pokemon .info .name {

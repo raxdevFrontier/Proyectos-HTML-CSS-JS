@@ -1,6 +1,6 @@
 const pokemonCard = document.getElementById("poke-container")
 const topPage = document.getElementById("top-page")
-const pokemonCount = 20
+const pokemonCount = 151
 const colorsType = {
 	fire: "#FFB163",
 	grass: "#94D49D",
@@ -36,8 +36,6 @@ const getPokemon = async (id) => {
 	const res = await fetch(url)
 	const data = await res.json()
 	createPokemonCard(data)
-	// window.scroll(0,0)
-	// topPage.scrollIntoView({ block: "end", behavior: "auto" })
 }
 
 const createPokemonCard = (pokemon) => {
@@ -47,23 +45,75 @@ const createPokemonCard = (pokemon) => {
 	const pokeName = pokemon.name[0].toUpperCase() + pokemon.name.slice(1)
 	const pokeID = pokemon.id.toString().padStart(3, "0")
 	const pokeTypes = pokemon.types.map((type) => type.type.name)
-	const type = main_types.find((type) => pokeTypes.indexOf(type) > -1)
-	const color = colorsType[type]
+	// const type = main_types.find((type) => pokeTypes.indexOf(type) > -1)
+	const primaryType = pokeTypes[0]
 
-	pokemonEl.style.backgroundColor = color
+	const color = colorsType[primaryType]
 
-	const pokemonInnerHTML = `
-	<div class="img-container">
-		<img
-			src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/dream-world/${pokemon.id}.svg"
-			alt="bulbasaur"
-		/>
-	</div>
-	<div class="info">
-		<span class="number">#${pokeID}</span>
-		<h3 class="name">${pokeName}</h3>
-		<small class="type">Type: <span>${type}</span></small>
-	</div>`
+	// pokemonEl.style.backgroundColor = color
+
+	let pokemonInnerHTML = ""
+
+	if (pokeTypes.length > 1) {
+		const secondaryType = pokeTypes[1]
+		const colorSecondary = colorsType[secondaryType]
+
+		pokemonEl.style.background = `linear-gradient(to right, ${color}, ${colorSecondary})`
+
+		pokemonInnerHTML = `
+			<div class="img-container">
+				<img
+					src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/dream-world/${pokemon.id}.svg"
+					alt="${pokeName}"
+				/>
+			</div>
+			<div class="info">
+				<span class="number">#${pokeID}</span>
+				<h3 class="name">${pokeName}</h3>
+				<small class="type">Type: 
+					<p>
+						<span style="background-color: ${color}">${primaryType}</span>
+						<span class="secondaryType" style="background-color:${colorSecondary}">${secondaryType}</span>
+					</p>
+				</small>
+			</div>`
+	} else {
+		pokemonEl.style.backgroundColor = color
+
+		pokemonInnerHTML = `
+			<div class="img-container">
+				<img
+					src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/dream-world/${pokemon.id}.svg"
+					alt="bulbasaur"
+				/>
+			</div>
+			<div class="info">
+				<span class="number">#${pokeID}</span>
+				<h3 class="name">${pokeName}</h3>
+				<small class="type">Type: 
+					<p>
+						<span style="background-color: ${color}">${primaryType}</span>
+					</p>
+				</small>
+			</div>`
+	}
+	// const pokemonInnerHTML = `
+	// <div class="img-container">
+	// 	<img
+	// 		src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/dream-world/${pokemon.id}.svg"
+	// 		alt="bulbasaur"
+	// 	/>
+	// </div>
+	// <div class="info">
+	// 	<span class="number">#${pokeID}</span>
+	// 	<h3 class="name">${pokeName}</h3>
+	// 	<small class="type">Type:
+	// 		<p>
+	// 			<span>${type}</span>
+	// 			<span class="secondaryType">${type}</span>
+	// 		</p>
+	// 	</small>
+	// </div>`
 
 	pokemonEl.innerHTML = pokemonInnerHTML
 
