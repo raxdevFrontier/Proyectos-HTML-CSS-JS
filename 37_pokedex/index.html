@@ -14,17 +14,18 @@
 		<title>Pokedex</title>
 	</head>
 	<body>
-		<h1 id="top-page">POKEDEX</h1>
+		<h1>POKEDEX</h1>
+		<form class="poke-filter">
+			<label for="poke-region">Region: </label>
+			<select name="poke-region" id="poke-region" placeholder="Select region...">
+				<option value="default" class="default"> Select region... </option>
+			</select>
+		</form>
 		<div class="poke-container" id="poke-container">
 			<!-- Hardcodegem la targeta d'un pokemon -->
 			<!-- <div class="pokemon" style="background-color: rgb(222, 253, 224)">
-				<div class="img-container"> -->
-				<!-- <img src="https//pokeres.bastionbot.org/images/pokemon/1.png" alt="bulbasaur" /> -->
-				<!-- <img
-						src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/1.png"
-						alt="bulbasaur"
-					/> -->
-				<!-- <img
+				<div class="img-container">
+					<img
 						src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/dream-world/1.svg"
 						alt="bulbasaur"
 					/>
