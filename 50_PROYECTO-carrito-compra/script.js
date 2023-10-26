@@ -38,8 +38,36 @@ function leerDatosCurso(curso) {
         cantidad: 1
     }
 
-    //Agregamos info del curso al carrito
-    articulosCarrito = [...articulosCarrito, infoCurso]
+    //Revisar si un elemento ya existe en el carrito
+    const existe = articulosCarrito.some( curso => curso.id === infoCurso.id)
+    if(existe) {
+        //Si el curso agregado ya estaba en el carrito -> actualizamos la propiedad "cantidad" 
+        const cursos = articulosCarrito.map( curso => {
+            //Con el .map() iteramos el array de objetos, y nos devuelve un nuevo array
+            if(curso.id === infoCurso.id){
+                /*Si identificamos que el curso que se quiere agregar (infoCurso), 
+                 * coincide con el curso iterado (curso), es decir que ya se encontraba 
+                 * en el array del carrito 'articulosCarrito', entonces:
+                 * se incrementa la propiedad 'cantidad' en 1 del curso que ya se encontraba en el carrito
+                 * y se devuelve el curso con el valor actualizado
+                 */
+                curso.cantidad++
+                return curso
+            } else {
+                /*Por el contrario, el curso que se quiere agregar (infoCurso), 
+                 * NO coincide con el curso iterado (curso)d el array del carrito, entonces:
+                 * se devuelve el curso, para poder ser agregado
+                 */
+                return curso
+            }
+        })
+        articulosCarrito = [...cursos]
+    } else {
+        //Si el curso agregado No estaba en el carrito -> lo agregamos al carrito 
+        //Agregamos info del curso al carrito
+        articulosCarrito = [...articulosCarrito, infoCurso]
+    }
+
 
     carritoHTML()
 }
