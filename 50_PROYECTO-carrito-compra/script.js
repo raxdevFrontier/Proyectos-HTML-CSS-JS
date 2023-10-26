@@ -9,6 +9,9 @@ cargarEventListeners()
 function cargarEventListeners() {
     //Cuando se agrega un curso, presionando el botón "Agregar al carrito" 
     listaCursos.addEventListener('click', agregarCursoBtn)
+
+    //Elimina curso del carrito
+    carrito.addEventListener('click', eliminarCurso)
 }
 
 
@@ -23,6 +26,23 @@ function agregarCursoBtn(e) {
         const cursoSeleccionado = e.target.parentElement.parentElement
 
         leerDatosCurso(cursoSeleccionado)
+    }
+}
+
+//Eliminar curso del carrito
+function eliminarCurso(e){
+    e.preventDefault()
+
+    if(e.target.classList.contains('borrar-curso')){
+        const cursoId = e.target.getAttribute('data-id')
+
+        //Eliminar el curso seleccionado, mediante el ID de éste (cursoId)
+        // Mediante .filter() iteramos el array de 'articulosCarrito' para que 
+        // nos devuelva los articulos con un ID diferente al del curso que se esta eliminando
+        
+        articulosCarrito = articulosCarrito.filter( curso => curso.id !== cursoId)
+
+        carritoHTML() // Se itera sobre el carrito, y se vuelve a cargar/mostrar el HTML
     }
 }
 
