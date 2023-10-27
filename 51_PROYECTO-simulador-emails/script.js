@@ -10,7 +10,18 @@ document.addEventListener('DOMContentLoaded', () => {
     const inputMensaje = document.querySelector('#mensaje')
 
     //Evento 'blur' que se da cuando salimos de un input
-    inputEmail.addEventListener('blur', function(e) {
+    inputEmail.addEventListener('blur', validar)
+    inputAsunto.addEventListener('blur', validar)
+    inputMensaje.addEventListener('blur', validar)
+    //NOTA 1: si llamasemos a la funcion 'validar()' con los '()' en los eventListener,
+    // esto ejecutaria la funcion directamente antes de que se diese el evento y daria un error
 
-    })
+    //NOTA 2: cuando se usa un evento dentro de una función, al definir ésta 
+    // se puede establecer como valor de entrada, y usarlo dentro de la funcion, 
+    // pero no es necesario ponerlo cuando se llama a esta en el eventListener, 
+    // porque cuando se de el evento, ya existirá dentro y se podrá usar sin problema 
+    function validar(e){
+        console.log(e.target.value)
+        return e.target.value
+    }
 })
