@@ -21,7 +21,15 @@ document.addEventListener('DOMContentLoaded', () => {
     // pero no es necesario ponerlo cuando se llama a esta en el eventListener, 
     // porque cuando se de el evento, ya existirá dentro y se podrá usar sin problema 
     function validar(e){
-        console.log(e.target.value)
-        return e.target.value
+        const inputVal = e.target.value
+        //Se valida si el valor de input esta vacío
+        // con 'trim()' eliminamos los espacios en blanco antes y después de del value
+        // y en caso de que se escriban solo espacios en blanco, los eliminará,
+        // dando como resultado que el campo esta vació
+        if(e.target.value.trim() === ''){
+            console.log('El campo esta vacio...')
+        } else {
+            console.log(`El campo contiene: ${inputVal}`)
+        }
     }
 })
