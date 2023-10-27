@@ -28,18 +28,17 @@ document.addEventListener('DOMContentLoaded', () => {
         // y en caso de que se escriban solo espacios en blanco, los eliminará,
         // dando como resultado que el campo esta vació
         if(e.target.value.trim() === ''){
-            console.log('El campo esta vacio...')
-            mostrarAlerta()
+            mostrarAlerta(`El campo ${e.target.id} es obligatorio`, e.target.parentElement)
         } else {
             console.log(`El campo contiene: ${inputVal}`)
         }
     }
 
-    function mostrarAlerta(){
+    function mostrarAlerta(mensaje, referencia){
         //Generar alerta en HTML
         const error = document.createElement('p')
-        error.textContent = 'Hay un error'
+        error.textContent = mensaje
         error.classList.add('bg-red-600', 'text-white', 'p-2', 'text-center')
-        formulario.appendChild(error)
+        referencia.appendChild(error)
     }
 })
