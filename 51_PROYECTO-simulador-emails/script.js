@@ -8,6 +8,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const inputEmail = document.querySelector('#email')
     const inputAsunto = document.querySelector('#asunto')
     const inputMensaje = document.querySelector('#mensaje')
+    const formulario = document.querySelector('#formulario')
 
     //Evento 'blur' que se da cuando salimos de un input
     inputEmail.addEventListener('blur', validar)
@@ -28,8 +29,17 @@ document.addEventListener('DOMContentLoaded', () => {
         // dando como resultado que el campo esta vació
         if(e.target.value.trim() === ''){
             console.log('El campo esta vacio...')
+            mostrarAlerta()
         } else {
             console.log(`El campo contiene: ${inputVal}`)
         }
+    }
+
+    function mostrarAlerta(){
+        //Generar alerta en HTML
+        const error = document.createElement('p')
+        error.textContent = 'Hay un error'
+        error.classList.add('bg-red-600', 'text-white', 'p-2', 'text-center')
+        formulario.appendChild(error)
     }
 })
