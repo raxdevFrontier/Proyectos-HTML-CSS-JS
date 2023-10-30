@@ -23,12 +23,18 @@ document.addEventListener('DOMContentLoaded', () => {
     // porque cuando se de el evento, ya existirá dentro y se podrá usar sin problema 
     function validar(e){
         const inputVal = e.target.value
+        const inputId = e.target.id
         //Se valida si el valor de input esta vacío
         // con 'trim()' eliminamos los espacios en blanco antes y después de del value
         // y en caso de que se escriban solo espacios en blanco, los eliminará,
         // dando como resultado que el campo esta vació
-        if(e.target.value.trim() === ''){
-            mostrarAlerta(`El campo ${e.target.id} es obligatorio`, e.target.parentElement)
+        if(inputVal.trim() === ''){
+            mostrarAlerta(`El campo ${inputId} es obligatorio`, e.target.parentElement)
+            return
+        }
+
+        if(inputId === 'email' && !validarEmail(inputVal)){
+            mostrarAlerta('El email no es valido', e.target.parentElement)
             return
         }
 
@@ -52,5 +58,13 @@ document.addEventListener('DOMContentLoaded', () => {
         if(alerta){
             alerta.remove()
         }
+    }
+
+    function validarEmail(email){
+        //Expresion regular
+        const regex =  /^\w+([.-_+]?\w+)*@\w+([.-]?\w+)*(\.\w{2,10})+$/;
+        const resultado = regex.test(email)
+        console.log(resultado)
+        return resultado
     }
 })
