@@ -4,16 +4,30 @@
 //En este caso, se valida que se carga el formulario
 document.addEventListener('DOMContentLoaded', () => {
 
+    //Se crea objeto donde guardaremos contenido de los diferentes campos del formulario
+    const email = {
+        email: '',
+        asunto: '',
+        mensaje: ''
+    }
+
     //Seleccion de los inputs del formulario
     const inputEmail = document.querySelector('#email')
     const inputAsunto = document.querySelector('#asunto')
     const inputMensaje = document.querySelector('#mensaje')
     const formulario = document.querySelector('#formulario')
+    const btnSubmit = document.querySelector('#formulario button[type="submit"]')
 
     //Evento 'blur' que se da cuando salimos de un input
-    inputEmail.addEventListener('blur', validar)
-    inputAsunto.addEventListener('blur', validar)
-    inputMensaje.addEventListener('blur', validar)
+    // inputEmail.addEventListener('blur', validar)
+    // inputAsunto.addEventListener('blur', validar)
+    // inputMensaje.addEventListener('blur', validar)
+    //Para una experiencia i validacion más en "tiempo real" al momento, 
+    // se puede usar el evento 'input' en los eventListener:
+    inputEmail.addEventListener('input', validar)
+    inputAsunto.addEventListener('input', validar)
+    inputMensaje.addEventListener('input', validar)
+
     //NOTA 1: si llamasemos a la funcion 'validar()' con los '()' en los eventListener,
     // esto ejecutaria la funcion directamente antes de que se diese el evento y daria un error
 
@@ -30,15 +44,28 @@ document.addEventListener('DOMContentLoaded', () => {
         // dando como resultado que el campo esta vació
         if(inputVal.trim() === ''){
             mostrarAlerta(`El campo ${inputId} es obligatorio`, e.target.parentElement)
+            email[e.target.name] = ''
+            comprobarEmail()
             return
         }
 
         if(inputId === 'email' && !validarEmail(inputVal)){
             mostrarAlerta('El email no es valido', e.target.parentElement)
+            email[e.target.name] = ''
+            comprobarEmail()
             return
         }
 
         limpiarAlerta(e.target.parentElement)
+
+        //Asignar valor del input al obejto 'email' creado al principio
+        // una vez se haya pasado la validacion previa
+        // para ello consultamos la propieda 'name' (mediante "e.target.name") 
+        // de cada input para almacenar correctamente los valores
+        email[e.target.name] = inputVal.trim().toLowerCase()
+
+        //comporbamos Email
+        comprobarEmail()
     }
 
     function mostrarAlerta(mensaje, referencia){
@@ -63,8 +90,21 @@ document.addEventListener('DOMContentLoaded', () => {
     function validarEmail(email){
         //Expresion regular
         const regex =  /^\w+([.-_+]?\w+)*@\w+([.-]?\w+)*(\.\w{2,10})+$/;
-        const resultado = regex.test(email)
-        console.log(resultado)
-        return resultado
+        return regex.test(email) //evaluamos la expresion regular, 
+        //y devolvera 'true' o 'false' en funcion si se cumlple dicha exp. regular
+    }
+
+    function comprobarEmail(){
+        //Con 'Object.values(email)' se nos devuelve un array con los valores del obj 'email'
+        // y con ".includes('')" evaluamos si alguno de los elementos del array devuelto esta vacío
+        // devolciendo 'true' en cuando esto suceda, y por el contrario devolviendo 'false' 
+        // cuando todos los campos esten rellenados
+        if(Object.values(email).includes('')){
+            btnSubmit.classList.add('opacity-50')
+            btnSubmit.disabled = true
+            return
+        } 
+        btnSubmit.classList.remove('opacity-50')
+        btnSubmit.disabled = false
     }
 })
