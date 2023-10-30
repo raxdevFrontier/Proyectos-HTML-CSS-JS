@@ -56,6 +56,16 @@ document.addEventListener('DOMContentLoaded', () => {
             spinner.classList.add('hidden')
 
             reiniciarForm()
+
+            //crear alerta
+            const alertaExito = document.createElement('p')
+            alertaExito.classList.add('bg-green-500', 'text-white', 'p-2', 'text-center', 'rounded-lg', 'mt-10', 'font-bold', 'text-sm', 'uppercase')
+            alertaExito.textContent = 'Mensaje enviado correctamente'
+            formulario.appendChild(alertaExito)
+
+            setTimeout(() => {
+                alertaExito.remove()
+            }, 3000)
         }, 3000)
     }
 
