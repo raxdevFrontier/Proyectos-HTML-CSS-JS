@@ -17,6 +17,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const inputMensaje = document.querySelector('#mensaje')
     const formulario = document.querySelector('#formulario')
     const btnSubmit = document.querySelector('#formulario button[type="submit"]')
+    const btnReset = document.querySelector('#formulario button[type="reset"]')
 
     //Evento 'blur' que se da cuando salimos de un input
     // inputEmail.addEventListener('blur', validar)
@@ -27,6 +28,21 @@ document.addEventListener('DOMContentLoaded', () => {
     inputEmail.addEventListener('input', validar)
     inputAsunto.addEventListener('input', validar)
     inputMensaje.addEventListener('input', validar)
+    
+    btnReset.addEventListener('click', (e) => {
+        e.preventDefault()
+
+        //reiniciamos formulario y objeto
+        email.email = ''
+        email.asunto = ''
+        email.mensaje = ''
+        formulario.reset()
+
+        //llamamos a la funcion para comporbar el email 
+        // y que el comportamiento del btn submit siga funcionando, 
+        // deshabilitandose cuando se presione el btn reset
+        comprobarEmail()
+    })
 
     //NOTA 1: si llamasemos a la funcion 'validar()' con los '()' en los eventListener,
     // esto ejecutaria la funcion directamente antes de que se diese el evento y daria un error
