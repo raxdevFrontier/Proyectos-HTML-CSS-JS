@@ -18,6 +18,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const formulario = document.querySelector('#formulario')
     const btnSubmit = document.querySelector('#formulario button[type="submit"]')
     const btnReset = document.querySelector('#formulario button[type="reset"]')
+    const spinner = document.querySelector('#spinner')
 
     //Evento 'blur' que se da cuando salimos de un input
     // inputEmail.addEventListener('blur', validar)
@@ -28,22 +29,14 @@ document.addEventListener('DOMContentLoaded', () => {
     inputEmail.addEventListener('input', validar)
     inputAsunto.addEventListener('input', validar)
     inputMensaje.addEventListener('input', validar)
+
+    formulario.addEventListener('submit', enviarEmail)
     
     btnReset.addEventListener('click', (e) => {
         e.preventDefault()
-
-        //reiniciamos formulario y objeto
-        email.email = ''
-        email.asunto = ''
-        email.mensaje = ''
-        formulario.reset()
-
-        //llamamos a la funcion para comporbar el email 
-        // y que el comportamiento del btn submit siga funcionando, 
-        // deshabilitandose cuando se presione el btn reset
-        comprobarEmail()
+        
+        reiniciarForm()
     })
-
     //NOTA 1: si llamasemos a la funcion 'validar()' con los '()' en los eventListener,
     // esto ejecutaria la funcion directamente antes de que se diese el evento y daria un error
 
@@ -51,6 +44,21 @@ document.addEventListener('DOMContentLoaded', () => {
     // se puede establecer como valor de entrada, y usarlo dentro de la funcion, 
     // pero no es necesario ponerlo cuando se llama a esta en el eventListener, 
     // porque cuando se de el evento, ya existirá dentro y se podrá usar sin problema 
+
+    function enviarEmail(e){
+        e.preventDefault()
+
+        spinner.classList.add('flex')
+        spinner.classList.remove('hidden')
+        
+        setTimeout(() => {
+            spinner.classList.remove('flex')
+            spinner.classList.add('hidden')
+
+            reiniciarForm()
+        }, 3000)
+    }
+
     function validar(e){
         const inputVal = e.target.value
         const inputId = e.target.id
@@ -122,5 +130,18 @@ document.addEventListener('DOMContentLoaded', () => {
         } 
         btnSubmit.classList.remove('opacity-50')
         btnSubmit.disabled = false
+    }
+
+    function reiniciarForm() {
+        //reiniciamos formulario y objeto
+        email.email = ''
+        email.asunto = ''
+        email.mensaje = ''
+        formulario.reset()
+
+        //llamamos a la funcion para comporbar el email 
+        // y que el comportamiento del btn submit siga funcionando, 
+        // deshabilitandose cuando se presione el btn reset
+        comprobarEmail()
     }
 })
