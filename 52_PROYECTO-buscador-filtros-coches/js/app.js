@@ -34,8 +34,8 @@ document.addEventListener('DOMContentLoaded', () => {
 })
 
 //eventListener para los select de busqueda
-marca.addEventListener('change', guardarBusqueda)
-year.addEventListener('change', guardarBusqueda)
+marca.addEventListener('change', e => {guardarBusqueda(e), filtrarAuto()})
+year.addEventListener('change', e => {guardarBusqueda(e), filtrarAuto()})
 minimo.addEventListener('change', guardarBusqueda)
 maximo.addEventListener('change', guardarBusqueda)
 puertas.addEventListener('change', guardarBusqueda)
@@ -75,4 +75,26 @@ function guardarBusqueda(e){
     const selectedOptionVal = e.target.value
     const selectedOptionId = e.target.id
     datosBusqueda[selectedOptionId] = selectedOptionVal
+}
+
+//filtrar en base la busqueda
+function filtrarAuto(){
+    const resultado = autos.filter(filtrarMarca).filter(filtrarYear)
+    console.table(resultado)
+}
+
+function filtrarMarca(auto){
+    const {marca} = datosBusqueda
+    if(marca){
+        return auto.marca === marca
+    }
+    //en caso de NO estar filtrando, devolvemos los autos 
+    return auto
+}
+function filtrarYear(auto){
+    const {year} = datosBusqueda
+    if(year){
+        return auto.year === parseInt(year)
+    }
+    return auto
 }
