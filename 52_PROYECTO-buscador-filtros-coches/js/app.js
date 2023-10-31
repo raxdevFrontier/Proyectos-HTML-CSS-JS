@@ -27,7 +27,7 @@ const datosBusqueda = {
 //Eventos
 document.addEventListener('DOMContentLoaded', () => {
     //muestra lista de coches al cargar
-    mostrarAutors(autos) 
+    mostrarAutos(autos) 
 
     //llena las opciones del dropdown de 'años
     llenarSelect()
@@ -44,7 +44,7 @@ color.addEventListener('change', e => {guardarBusqueda(e), filtrarAuto()})
 
 
 //Funciones
-function mostrarAutors(autos){
+function mostrarAutos(autos){
     //dado que usamos 'appendChild() en el forEach()
     // éste solo añade HTML debajo, no eliminar el html añadido anteriormente
     limpiarHTML()
@@ -98,7 +98,25 @@ function filtrarAuto(){
                         .filter(filtrarPuertas)
                         .filter(filtrarTransmision)
                         .filter(filtrarColor)
-    mostrarAutors(resultado)
+    
+    //evaluar si hay algun resultado de la busqueda
+    if(resultado.length){
+        //en caso afirmativo, mostramos el listado html del resultado de autos
+        mostrarAutos(resultado)
+    } else {
+        //en caso contrario, mostramos mensaje de 'no results'
+        noResultados()
+    }
+}
+
+function noResultados(){
+
+    limpiarHTML()
+
+    const noResultados = document.createElement('div')
+    noResultados.classList.add('alerta', 'error')
+    noResultados.textContent = 'No se han encontrado resultados' 
+    resultado.appendChild(noResultados)
 }
 
 function filtrarMarca(auto){
@@ -130,7 +148,6 @@ function filtrarMaximo(auto){
     }
     return auto
 }
-
 function filtrarPuertas(auto){
     const {puertas} = datosBusqueda
     if(puertas){
@@ -138,7 +155,6 @@ function filtrarPuertas(auto){
     }
     return auto
 }
-
 function filtrarTransmision(auto){
     const {transmision} = datosBusqueda
     if(transmision){
