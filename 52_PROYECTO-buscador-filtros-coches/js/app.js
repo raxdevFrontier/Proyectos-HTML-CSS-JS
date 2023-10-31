@@ -36,11 +36,11 @@ document.addEventListener('DOMContentLoaded', () => {
 //eventListener para los select de busqueda
 marca.addEventListener('change', e => {guardarBusqueda(e), filtrarAuto()})
 year.addEventListener('change', e => {guardarBusqueda(e), filtrarAuto()})
-minimo.addEventListener('change', guardarBusqueda)
-maximo.addEventListener('change', guardarBusqueda)
-puertas.addEventListener('change', guardarBusqueda)
-transmision.addEventListener('change', guardarBusqueda)
-color.addEventListener('change', guardarBusqueda)
+minimo.addEventListener('change', e => {guardarBusqueda(e), filtrarAuto()})
+maximo.addEventListener('change', e => {guardarBusqueda(e), filtrarAuto()})
+puertas.addEventListener('change', e => {guardarBusqueda(e), filtrarAuto()})
+transmision.addEventListener('change', e => {guardarBusqueda(e), filtrarAuto()})
+color.addEventListener('change', e => {guardarBusqueda(e), filtrarAuto()})
 
 
 //Funciones
@@ -90,7 +90,14 @@ function guardarBusqueda(e){
 
 //filtrar en base la busqueda
 function filtrarAuto(){
-    const resultado = autos.filter(filtrarMarca).filter(filtrarYear)
+    const resultado = autos
+                        .filter(filtrarMarca)
+                        .filter(filtrarYear)
+                        .filter(filtrarMinimo)
+                        .filter(filtrarMaximo)
+                        .filter(filtrarPuertas)
+                        .filter(filtrarTransmision)
+                        .filter(filtrarColor)
     mostrarAutors(resultado)
 }
 
@@ -107,5 +114,44 @@ function filtrarYear(auto){
     if(year){
         return auto.year === parseInt(year)
     }
+    return auto
+}
+function filtrarMinimo(auto){
+    const {minimo} = datosBusqueda
+    if(minimo){
+        return auto.precio >= minimo
+    }
+    return auto
+}
+function filtrarMaximo(auto){
+    const {maximo} = datosBusqueda
+    if(maximo){
+        return auto.precio <= maximo
+    }
+    return auto
+}
+
+function filtrarPuertas(auto){
+    const {puertas} = datosBusqueda
+    if(puertas){
+        return auto.puertas === parseInt(puertas)
+    }
+    return auto
+}
+
+function filtrarTransmision(auto){
+    const {transmision} = datosBusqueda
+    if(transmision){
+        return auto.transmision === transmision
+    }
+    //en caso de NO estar filtrando, devolvemos los autos 
+    return auto
+}
+function filtrarColor(auto){
+    const {color} = datosBusqueda
+    if(color){
+        return auto.color === color
+    }
+    //en caso de NO estar filtrando, devolvemos los autos 
     return auto
 }
