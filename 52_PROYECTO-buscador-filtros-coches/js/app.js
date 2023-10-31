@@ -27,7 +27,7 @@ const datosBusqueda = {
 //Eventos
 document.addEventListener('DOMContentLoaded', () => {
     //muestra lista de coches al cargar
-    mostrarAutors() 
+    mostrarAutors(autos) 
 
     //llena las opciones del dropdown de 'años
     llenarSelect()
@@ -44,7 +44,11 @@ color.addEventListener('change', guardarBusqueda)
 
 
 //Funciones
-function mostrarAutors(){
+function mostrarAutors(autos){
+    //dado que usamos 'appendChild() en el forEach()
+    // éste solo añade HTML debajo, no eliminar el html añadido anteriormente
+    limpiarHTML()
+
     autos.forEach( auto => {
         
         const { marca, modelo, year, puertas, transmision, precio, color } = auto
@@ -56,6 +60,13 @@ function mostrarAutors(){
 
         resultado.appendChild(autoHTML)
     })
+}
+
+//limpiar HTML
+function limpiarHTML(){
+    while(resultado.firstChild){
+        resultado.removeChild(resultado.firstChild)
+    }
 }
 
 //generar los años del dropdown 
@@ -80,7 +91,7 @@ function guardarBusqueda(e){
 //filtrar en base la busqueda
 function filtrarAuto(){
     const resultado = autos.filter(filtrarMarca).filter(filtrarYear)
-    console.table(resultado)
+    mostrarAutors(resultado)
 }
 
 function filtrarMarca(auto){
