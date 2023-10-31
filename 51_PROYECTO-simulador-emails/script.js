@@ -19,6 +19,8 @@ document.addEventListener('DOMContentLoaded', () => {
     const btnSubmit = document.querySelector('#formulario button[type="submit"]')
     const btnReset = document.querySelector('#formulario button[type="reset"]')
     const spinner = document.querySelector('#spinner')
+    
+    const inputCC = document.querySelector('#cc')
 
     //Evento 'blur' que se da cuando salimos de un input
     // inputEmail.addEventListener('blur', validar)
@@ -27,6 +29,7 @@ document.addEventListener('DOMContentLoaded', () => {
     //Para una experiencia i validacion más en "tiempo real" al momento, 
     // se puede usar el evento 'input' en los eventListener:
     inputEmail.addEventListener('input', validar)
+    inputCC.addEventListener('blur', validar)
     inputAsunto.addEventListener('input', validar)
     inputMensaje.addEventListener('input', validar)
 
@@ -72,18 +75,23 @@ document.addEventListener('DOMContentLoaded', () => {
     function validar(e){
         const inputVal = e.target.value
         const inputId = e.target.id
+
+        
         //Se valida si el valor de input esta vacío
         // con 'trim()' eliminamos los espacios en blanco antes y después de del value
         // y en caso de que se escriban solo espacios en blanco, los eliminará,
         // dando como resultado que el campo esta vació
         if(inputVal.trim() === ''){
+            if(inputId === 'cc'){
+                return
+            }
             mostrarAlerta(`El campo ${inputId} es obligatorio`, e.target.parentElement)
             email[e.target.name] = ''
             comprobarEmail()
             return
         }
 
-        if(inputId === 'email' && !validarEmail(inputVal)){
+        if(inputId === 'email' && !validarEmail(inputVal) || inputId === 'cc' && !validarEmail(inputVal)){
             mostrarAlerta('El email no es valido', e.target.parentElement)
             email[e.target.name] = ''
             comprobarEmail()
@@ -155,3 +163,9 @@ document.addEventListener('DOMContentLoaded', () => {
         comprobarEmail()
     }
 })
+
+/* ---------------------------------- RETO ----------------------------------
+    - Añadir campo CC para añadir destinatario extra
+    - Este campo no es obligatorio, 
+    pero en caso de tener informacion se debe validar que sea un email válido
+----------------------------------------------------------------------------*/
