@@ -8,7 +8,20 @@ let tweets = []
 eventListeners()
 
 function eventListeners() {
+    //cuando el usuario agrega un nuevo twwet
     formulario.addEventListener('submit', agregarTweet)
+
+    //cuando el documento este cargado
+    document.addEventListener('DOMContentLoaded', () => {
+        tweets = JSON.parse(localStorage.getItem('tweets')) || []
+        /* Para poder llamar a la funcion 'crearHTML()' 
+        y generar el html de los tweets que ya se agregaron en el pasado (y que se encuentran el el localStorage)
+        se añade a la linia 16 la parte de: "|| []" para que, en caso de que la parte izquierda tenga un valor 'null'
+        se asigne a 'tweets' un array vacio. 
+        Porque sinó la funcion daria error en el moemnto de evaluar si el array esta vacio o no con 'length' */
+
+        crearHTML()
+    })
 }
 
 
@@ -24,7 +37,7 @@ function agregarTweet(e){
 
     //validación del texto
     if(tweet === ''){
-        mostrarError('No se puede agregar tweets vacios')
+        mostrarError('No se puede agregar tweets vacios', e.target)
         return
     }
 
@@ -50,7 +63,10 @@ function agregarTweet(e){
     formulario.reset()
 }
 
-function mostrarError(error){
+function mostrarError(error, referencia){
+
+    limpiarError(referencia)
+    
     const mensajeError = document.createElement('p')
     mensajeError.textContent = error
     mensajeError.classList.add('error')
@@ -61,6 +77,13 @@ function mostrarError(error){
     setTimeout(() => {
         mensajeError.remove()
     }, 3000)
+}
+
+function limpiarError(referencia){
+    const alerta = referencia.querySelector('.error')
+    if(alerta){
+        alerta.remove()
+    }
 }
 
 //añadir HTML de los tweets que se quieren añadir
@@ -76,6 +99,12 @@ function crearHTML(){
             listaTweets.appendChild(li)
         })
     }
+    sincronizarStorage()
+}
+
+//agregar tweets al localStorage
+function sincronizarStorage(){
+    localStorage.setItem('tweets', JSON.stringify(tweets))
 }
 
 //limpiar HTML lista tweets
