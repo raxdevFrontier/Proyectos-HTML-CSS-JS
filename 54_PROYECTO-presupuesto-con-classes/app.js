@@ -19,6 +19,11 @@ class Presupuesto {
         this.restante = Number(presupuesto)
         this.gastos = []
     }
+
+    nuevoGasto(gasto){
+        this.gastos = [...this.gastos, gasto]
+        console.log(this.gastos)
+    }
 }
 class UI {
     insertarPresupuesto(cantidad){
@@ -50,7 +55,7 @@ class UI {
         //quitar alerta
         setTimeout(() => {
             divAlerta.remove()
-        }, 3000);
+        }, 2000);
     }
 }
 
@@ -79,7 +84,7 @@ function agregarGasto(e){
 
     //leer formulario
     const nombre = document.querySelector('#gasto').value
-    const cantidad = document.querySelector('#cantidad').value
+    const cantidad = Number(document.querySelector('#cantidad').value)
 
     if(nombre === '' || cantidad === ''){
         ui.imprimirAlerta('Ambos campos son obligatorios', 'error')
@@ -88,4 +93,14 @@ function agregarGasto(e){
         ui.imprimirAlerta('Cantidad no valida', 'error')
         return
     }
+
+    //generar objeto con gastoi
+    const gasto = {nombre, cantidad, id: Date.now()}
+
+    //añadir nuevo gasto
+    presupuesto.nuevoGasto(gasto)
+
+    ui.imprimirAlerta('Gasto agregado')
+
+    formulario.reset()
 }
