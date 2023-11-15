@@ -20,7 +20,14 @@ class Presupuesto {
     }
 }
 class UI {
+    insertarPresupuesto(cantidad){
+        //extraer valores del objeto 'Presupuesto' 
+        const { presupuesto, restante } = cantidad
 
+        //agregar al HTML
+        document.querySelector('#total').textContent = presupuesto
+        document.querySelector('#restante').textContent = restante
+    }
 }
 
 //instanciar+
@@ -32,13 +39,12 @@ let presupuesto
 function preguntarPresupuesto(){
     const presupuestoUsuario = prompt('¿Cuál es su presupuesto?')
 
-    console.log(presupuestoUsuario)
-
     if(presupuestoUsuario === '' || presupuestoUsuario === null || isNaN(presupuestoUsuario) || presupuestoUsuario <= 0){
         window.location.reload()
     }
 
     //Presupuesto valido
-    //instanciamos la class Presupuesto
     presupuesto = new Presupuesto(presupuestoUsuario)
+
+    ui.insertarPresupuesto(presupuesto)
 }
