@@ -22,12 +22,7 @@ class Presupuesto {
 
     nuevoGasto(gasto){
         this.gastos = [...this.gastos, gasto]
-        this.calcularRestante()
-    }
-
-    calcularRestante(){
-        const gastado = this.gastos.reduce( (total, gasto) => total + gasto.cantidad, 0 )
-        this.restante = this.presupuesto - gastado
+        console.log(this.gastos)
     }
 }
 class UI {
@@ -79,7 +74,7 @@ class UI {
 
             //agregar al HTML
             nuevoGasto.innerHTML = `
-                ${nombre} <span class="badge badge-primary badge-pill"> $ ${cantidad} </span>
+                ${nombre} <span class="badge badge-primary badge-pill"> ${cantidad} </span>
             `
             //boton para borrar gasto
             const btnBorrar = document.createElement('button')
@@ -96,10 +91,6 @@ class UI {
         while(gastoListado.firstChild){
             gastoListado.removeChild(gastoListado.firstChild)
         }
-    }
-
-    actualizarRestante(restante) {
-        document.querySelector('#restante').textContent = restante
     }
 }
 
@@ -148,9 +139,8 @@ function agregarGasto(e){
     ui.imprimirAlerta('Gasto agregado')
 
     //Imprimir gastos
-    const {gastos, restante} = presupuesto
+    const {gastos} = presupuesto
     ui.agregarGastoListado(gastos)
-    ui.actualizarRestante(restante)
 
     formulario.reset()
 }
