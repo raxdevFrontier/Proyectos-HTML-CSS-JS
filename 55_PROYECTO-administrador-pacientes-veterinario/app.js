@@ -9,6 +9,7 @@ const sintomasInput = document.querySelector('#sintomas')
 const formulario = document.querySelector('#nueva-cita')
 const contenedorCitas = document.querySelector('#citas')
 
+let editando
 
 class Citas {
     constructor() {
@@ -21,6 +22,10 @@ class Citas {
 
     eliminarCita(id){
         this.citas = this.citas.filter(cita => cita.id !== id)
+    }
+
+    editarCita(citaActualizada){
+        this.citas = this.citas.map(cita => cita.id === citaActualizada.id ? citaActualizada : cita)
     }
 }
 
@@ -53,7 +58,7 @@ class UI {
         this.limpiarHTML()
 
         citas.forEach(cita => {
-            const {mascota, propietarios, telefono, fecha, hora, sintomas, id} = cita
+            const {mascota, propietario, telefono, fecha, hora, sintomas, id} = cita
 
             const divCita = document.createElement('div')
             divCita.classList.add('cita', 'p-3')
@@ -94,8 +99,16 @@ class UI {
             </svg>
             `
             btnEliminar.onclick = () => eliminarCita(id)
-
+            
             //boton Editar cita
+            const btnEditar = document.createElement('button')
+            btnEditar.classList.add('btn','btn-primary', 'mr-2')
+            btnEditar.innerHTML = `
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M16.862 4.487l1.687-1.688a1.875 1.875 0 112.652 2.652L10.582 16.07a4.5 4.5 0 01-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 011.13-1.897l8.932-8.931zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0115.75 21H5.25A2.25 2.25 0 013 18.75V8.25A2.25 2.25 0 015.25 6H10" />
+            </svg>
+            `
+            btnEditar.onclick = () => cargarEdicion(cita)
 
 
             divCita.appendChild(mascotaParrafo)
@@ -105,6 +118,7 @@ class UI {
             divCita.appendChild(horaParrafo)
             divCita.appendChild(sintomasParrafo)
             divCita.appendChild(btnEliminar)
+            divCita.appendChild(btnEditar)
 
             contenedorCitas.appendChild(divCita)
         })
@@ -154,23 +168,40 @@ function nuevaCita(e){
     e.preventDefault()
 
     //extraer info de objeto CitAS
-    const {mascota, propietarios, telefono, fecha, hora, sintomas} = citaObj
+    const {mascota, propietario, telefono, fecha, hora, sintomas} = citaObj
 
     //validar formulari
-    if(mascota === '' || propietarios === '' || telefono === '' || fecha === '' || hora === '' || sintomas === ''){
+    if(mascota === '' || propietario === '' || telefono === '' || fecha === '' || hora === '' || sintomas === ''){
         ui.imprimirAlerta('Todos los campos son obligatorios', 'error')
         return
     }
 
-    //generar id unico por cita
-    citaObj.id = Date.now()
+    if(editando){
+        //imprimir alerta
+        ui.imprimirAlerta('Cita editada correctamente')
 
-    //crear nueva cita
-    administrarCitas.agregarCita({...citaObj})
-    /*con "{...citaObj}" hacemos una 'copia' del contenido de 'citaObj' antes de llamar al metodo
-        si no se hiciera asi, el metodo agregaria la nueva cita, y las posible citas anteriores
-        tendrian los datos de la ultima cita, dado que al metodo se le pasa la 'ultima cita' como tal
-    */
+        //pasar objeto de la cita
+        administrarCitas.editarCita({...citaObj})
+
+        formulario.querySelector('button[type="submit"]').textContent = 'Crear cita'
+        
+        editando = false
+    } else {
+        //modo "Cita Nueva"
+
+        //generar id unico por cita
+        citaObj.id = Date.now()
+    
+        //crear nueva cita
+        administrarCitas.agregarCita({...citaObj})
+        /*con "{...citaObj}" hacemos una 'copia' del contenido de 'citaObj' antes de llamar al metodo
+            si no se hiciera asi, el metodo agregaria la nueva cita, y las posible citas anteriores
+            tendrian los datos de la ultima cita, dado que al metodo se le pasa la 'ultima cita' como tal
+        */
+
+        //imprimir alerta
+        ui.imprimirAlerta('Cita agregada')
+    }
 
     //reiniciar objeto para la validación
     reiniciarObjeto()
@@ -197,4 +228,31 @@ function eliminarCita(id){
     ui.imprimirAlerta('Cita eliminada')
     //refrescar citas
     ui.imprimirCitas(administrarCitas)
+}
+//cargar los datos en el formulario para la edición de la cita
+function cargarEdicion(cita){
+    
+    const {mascota, propietario, telefono, fecha, hora, sintomas, id} = cita
+
+    //llenar inputs
+    mascotaInput.value = mascota
+    propietarioInput.value = propietario
+    telefonoInput.value = telefono
+    fechaInput.value = fecha
+    horaInput.value = hora
+    sintomasInput.value = sintomas
+
+    //llenar objeto global (sinó al guardar cambio el formulario detectaria que el objeto esta vacio y saltaria alerta)
+    citaObj.mascota = mascota
+    citaObj.propietario = propietario
+    citaObj.telefono = telefono
+    citaObj.fecha = fecha
+    citaObj.hora = hora
+    citaObj.sintomas = sintomas
+    citaObj.id = id
+
+    //cambiar texto boton
+    formulario.querySelector('button[type="submit"]').textContent = 'Guardar cambios'
+
+    editando = true
 }
