@@ -14,6 +14,10 @@ class Citas {
     constructor() {
         this.citas = []
     }
+
+    agregarCita(cita){
+        this.citas = [...this.citas, cita]
+    }
 }
 
 class UI {
@@ -38,6 +42,60 @@ class UI {
         setTimeout(() => {
             divMensaje.remove()
         }, 2000);
+    }
+
+    imprimirCitas({citas}){
+
+        this.limpiarHTML()
+
+        citas.forEach(cita => {
+            const {mascota, propietarios, telefono, fecha, hora, sintomas, id} = cita
+
+            const divCita = document.createElement('div')
+            divCita.classList.add('cita', 'p-3')
+            divCita.dataset.id = id
+
+            //scripting de la cita
+            const mascotaParrafo = document.createElement('h2')
+            mascotaParrafo.classList.add('card-title', 'font-weight-bolder')
+            mascotaParrafo.textContent = mascota
+
+            const propietarioParrafo = document.createElement('p')
+            propietarioParrafo.innerHTML = `
+                <span class='font-weight-bolder'>Propietario: ${propietario}</span>
+            `
+            const telefonoParrafo = document.createElement('p')
+            telefonoParrafo.innerHTML = `
+                <span class='font-weight-bolder'>Telefono: ${telefono}</span>
+            `
+            const fechaParrafo = document.createElement('p')
+            fechaParrafo.innerHTML = `
+                <span class='font-weight-bolder'>Fecha: ${fecha}</span>
+            `
+            const horaParrafo = document.createElement('p')
+            horaParrafo.innerHTML = `
+                <span class='font-weight-bolder'>Hora: ${hora}</span>
+            `
+            const sintomasParrafo = document.createElement('p')
+            sintomasParrafo.innerHTML = `
+                <span class='font-weight-bolder'>Sintomas: ${sintomas}</span>
+            `
+
+            divCita.appendChild(mascotaParrafo)
+            divCita.appendChild(propietarioParrafo)
+            divCita.appendChild(telefonoParrafo)
+            divCita.appendChild(fechaParrafo)
+            divCita.appendChild(horaParrafo)
+            divCita.appendChild(sintomasParrafo)
+
+            contenedorCitas.appendChild(divCita)
+        })
+    }
+    
+    limpiarHTML(){
+        while(contenedorCitas.firstChild){
+            contenedorCitas.removeChild(contenedorCitas.firstChild)
+        }
     }
 }
 
@@ -88,6 +146,30 @@ function nuevaCita(e){
         return
     }
 
+    //generar id unico por cita
+    citaObj.id = Date.now()
+
     //crear nueva cita
-    
+    administrarCitas.agregarCita({...citaObj})
+    /*con "{...citaObj}" hacemos una 'copia' del contenido de 'citaObj' antes de llamar al metodo
+        si no se hiciera asi, el metodo agregaria la nueva cita, y las posible citas anteriores
+        tendrian los datos de la ultima cita, dado que al metodo se le pasa la 'ultima cita' como tal
+    */
+
+    //reiniciar objeto para la validación
+    reiniciarObjeto()
+
+    formulario.reset()
+
+    //mostrar HTML de las citas
+    ui.imprimirCitas(administrarCitas)
+}
+
+function reiniciarObjeto(){
+    citaObj.mascota = ''
+    citaObj.propietario = ''
+    citaObj.telefono = ''
+    citaObj.fecha = ''
+    citaObj.hora = ''
+    citaObj.sintomas = ''
 }
