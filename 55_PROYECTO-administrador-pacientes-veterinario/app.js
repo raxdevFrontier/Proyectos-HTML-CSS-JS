@@ -129,8 +129,6 @@ const citaObj = {
 //agrega datos al objeto de cita
 function datosCita(e){
     citaObj[e.target.name] = e.target.value
-
-    console.log(citaObj)
 }
 
 //valida y agraga nueva cita a la classe Citas
@@ -141,7 +139,7 @@ function nuevaCita(e){
     const {mascota, propietarios, telefono, fecha, hora, sintomas} = citaObj
 
     //validar formulari
-    if(mascota === '' || propietarios === '' || telefono === '' || fecha === '' || hora === '' || sintomas){
+    if(mascota === '' || propietarios === '' || telefono === '' || fecha === '' || hora === '' || sintomas === ''){
         ui.imprimirAlerta('Todos los campos son obligatorios', 'error')
         return
     }
