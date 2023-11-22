@@ -89,11 +89,19 @@ class UI {
         }, 3000);
     }
 
-   imprimirCitas({citas}) { // Se puede aplicar destructuring desde la función...
+    imprimirCitas() { 
         this.limpiarHTML();
 
-        citas.forEach(cita => {
-            const {mascota, propietario, telefono, fecha, hora, sintomas, id } = cita;
+        //leer contenido base de datos
+        const objectStore = DB.transaction('citas').objectStore('citas')
+
+        objectStore.openCursor().onsuccess = function(e){
+        // NOTA: con ".openCursor" iteramos la base de datos
+
+        const cursor = e.target.result
+
+        if(cursor){
+            const {mascota, propietario, telefono, fecha, hora, sintomas, id } = cursor.value;
 
             const divCita = document.createElement('div');
             divCita.classList.add('cita', 'p-3');
@@ -127,7 +135,7 @@ class UI {
 
             // Añade un botón de editar...
             const btnEditar = document.createElement('button');
-            btnEditar.onclick = () => cargarEdicion(cita);
+            btnEditar.onclick = () => cargarEdicion(cursor.value);
 
             btnEditar.classList.add('btn', 'btn-info');
             btnEditar.innerHTML = 'Editar <svg fill="none" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24" stroke="currentColor"><path d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"></path></svg>'
@@ -143,7 +151,10 @@ class UI {
             divCita.appendChild(btnEditar)
 
             contenedorCitas.appendChild(divCita);
-        });    
+
+            cursor.continue()
+        }
+    }
 }
     limpiarHTML() {
         while(contenedorCitas.firstChild) {
@@ -203,7 +214,7 @@ function nuevaCita(e) {
 
 
     // Imprimir el HTML de citas
-    ui.imprimirCitas(administrarCitas);
+    ui.imprimirCitas();
 
     // Reinicia el objeto para evitar futuros problemas de validación
     reiniciarObjeto();
@@ -227,7 +238,7 @@ function reiniciarObjeto() {
 function eliminarCita(id) {
     administrarCitas.eliminarCita(id);
 
-    ui.imprimirCitas(administrarCitas)
+    ui.imprimirCitas()
 }
 
 function cargarEdicion(cita) {
@@ -271,6 +282,8 @@ function crearDB() {
 
         DB = crearDB.result
 
+        //mostrar citss registradas en la base de datos anteriormente
+        ui.imprimirCitas()
     }
 
     crearDB.onupgradeneeded = function(e){
