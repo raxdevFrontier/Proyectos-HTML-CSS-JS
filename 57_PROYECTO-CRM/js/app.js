@@ -1,67 +1,110 @@
 //https://developer.mozilla.org/es/docs/Glossary/IIFE
-(function () {
-	let DB;
-	const listadoClientes = document.querySelector('#listado-clientes');
+;(function () {
+	const listadoClientes = document.querySelector('#listado-clientes')
 
 	document.addEventListener('DOMContentLoaded', () => {
-		crearDB();
+		crearDB()
 
 		if (window.indexedDB.open('crm', 1)) {
-			obtenerClientes();
+			obtenerClientes()
 		}
-	});
 
+		listadoClientes.addEventListener('click', eliminarRegistro)
+	})
+
+	function eliminarRegistro(e) {
+		if (e.target.classList.contains('eliminar')) {
+			const idEliminar = Number(e.target.dataset.cliente)
+
+			// const confirmar = confirm('Deseas eliminar este cliente?')
+			// Para ALERTAS más llamativa e interesantes mirar biblioteca "sweetalert2" - https://sweetalert2.github.io/
+
+			// vvvvvvvvv  ALERTA CON "SWEETALERT2" vvvvvvvvvvv
+			Swal.fire({
+				title: 'Do you want to delete the client?',
+				showCancelButton: true,
+				confirmButtonText: 'Confirm, delete this client',
+			}).then((result) => {
+				if (result.isConfirmed) {
+					Swal.fire({
+						title: 'Deleted!',
+						icon: 'success',
+						showConfirmButton: false,
+						html: ' ',
+						timer: 2000,
+					}).then((result) => {
+						if (result.dismiss === Swal.DismissReason.timer) {
+							setTimeout(() => {
+								const transaction = DB.transaction(['crm'], 'readwrite')
+								const objectStore = transaction.objectStore('crm')
+
+								objectStore.delete(idEliminar)
+
+								transaction.oncomplete = function () {
+									e.target.parentElement.parentElement.remove()
+								}
+								transaction.onerror = function () {
+									console.log('ERROR! No se pudo eliminar cliente...')
+								}
+							}, 500)
+						}
+					})
+				}
+			})
+
+			// ^^^^^^^^^  ALERTA CON "SWEETALERT2" ^^^^^^^^^^^^
+		}
+	}
 	//Crea base de datos de IndexDB
 	function crearDB() {
-		const crearDB = window.indexedDB.open('crm', 1);
+		const crearDB = window.indexedDB.open('crm', 1)
 
 		crearDB.onerror = function () {
-			console.log('Error al crear BD');
-		};
+			console.log('Error al crear BD')
+		}
 
 		crearDB.onsuccess = function () {
-			DB = crearDB.result;
-		};
+			DB = crearDB.result
+		}
 
 		crearDB.onupgradeneeded = function (e) {
-			const db = e.target.result;
+			const db = e.target.result
 
 			const objectStore = db.createObjectStore('crm', {
 				keyPath: 'id',
 				autoIncrement: true,
-			});
+			})
 
-			objectStore.createIndex('nombre', 'nombre', { unique: false });
-			objectStore.createIndex('email', 'email', { unique: true });
-			objectStore.createIndex('telefono', 'telefono', { unique: false });
-			objectStore.createIndex('empresa', 'empresa', { unique: false });
-			objectStore.createIndex('id', 'id', { unique: true });
+			objectStore.createIndex('nombre', 'nombre', { unique: false })
+			objectStore.createIndex('email', 'email', { unique: true })
+			objectStore.createIndex('telefono', 'telefono', { unique: false })
+			objectStore.createIndex('empresa', 'empresa', { unique: false })
+			objectStore.createIndex('id', 'id', { unique: true })
 
-			console.log('DB Lista');
-		};
+			console.log('DB Lista')
+		}
 	}
 
 	function obtenerClientes() {
-		const abrirConexion = window.indexedDB.open('crm', 1);
+		const abrirConexion = window.indexedDB.open('crm', 1)
 
 		abrirConexion.onerror = function () {
-			console.log('Hubo un error al obtener los clientes');
-		};
+			console.log('Hubo un error al obtener los clientes')
+		}
 
 		abrirConexion.onsuccess = function () {
-			DB = abrirConexion.result;
+			DB = abrirConexion.result
 
-			limpiarHTML();
+			limpiarHTML()
 
 			//leer contenido base de datos
-			const objectStore = DB.transaction('crm').objectStore('crm');
+			const objectStore = DB.transaction('crm').objectStore('crm')
 
 			objectStore.openCursor().onsuccess = function (e) {
-				const cursor = e.target.result;
+				const cursor = e.target.result
 
 				if (cursor) {
-					const { nombre, email, telefono, empresa, id } =
-						cursor.value;
+					const { nombre, email, telefono, empresa, id } = cursor.value
 
 					// const listadoClientes =
 					// 	document.querySelector('#listado-clientes');
@@ -156,22 +199,22 @@
                             </td>
                             <td class="px-6 py-4 whitespace-no-wrap border-b border-gray-200 text-sm leading-5">
                                 <a href="editar-cliente.html?id=${id}" class="text-teal-600 hover:text-teal-900 mr-5">Editar</a>
-                                <a href="#" data-cliente="${id}" class="text-red-600 hover:text-red-900">Eliminar</a>
+                                <a href="#" data-cliente="${id}" class="text-red-600 hover:text-red-900 eliminar">Eliminar</a>
                             </td>
                         </tr>
-                    `;
+                    `
 
-					cursor.continue();
+					cursor.continue()
 				} else {
-					console.log('No hay más registros...');
+					console.log('No hay más registros...')
 				}
-			};
-		};
+			}
+		}
 	}
 
 	function limpiarHTML() {
 		while (listadoClientes.firstChild) {
-			listadoClientes.removeChild(listadoClientes.firstChild);
+			listadoClientes.removeChild(listadoClientes.firstChild)
 		}
 	}
-})();
+})()
