@@ -63,8 +63,41 @@ function cosultarAPI(ciudad, pais) {
 		.then((respuesta) => respuesta.json())
 		.then((resultado) => {
 			// console.log(resultado)
+			limpiarHTML()
+
 			if (resultado.cod === '404') {
 				mostrarError('Localización no encontrada')
+				return
 			}
+
+			//imprimir datos en HTML
+			mostrarClima(resultado)
 		})
+}
+
+function mostrarClima(datos) {
+	const {
+		main: { temp, temp_max, temp_min },
+	} = datos
+
+	const tempC = convertirCelsius(temp)
+
+	const actual = document.createElement('p')
+	actual.innerHTML = `${tempC} &#8451;`
+	// el codigo "&#8451;" es una entidad para poner el simbolo de " ºC "
+	actual.classList.add('font-bold', 'text-6xl')
+
+	const resultadoDiv = document.createElement('div')
+	actual.classList.add('text-center', 'text-white')
+	resultadoDiv.appendChild(actual)
+	resultado.appendChild(resultadoDiv)
+}
+
+// Funcion para pasa de grados Kelvin a Celsius
+const convertirCelsius = (temperatura) => Number((temperatura - 273.15).toFixed(2))
+
+function limpiarHTML() {
+	while (resultado.firstChild) {
+		resultado.removeChild(resultado.firstChild)
+	}
 }
