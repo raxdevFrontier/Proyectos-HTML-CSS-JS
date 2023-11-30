@@ -5,6 +5,11 @@ html {
     
 }
 
+img {
+    margin: 0 auto 0.5rem auto; /* Centrar grafico */
+    width: 150px;
+    height: 150px;
+}
 
 .sk-fading-circle {
     margin: 100px auto;

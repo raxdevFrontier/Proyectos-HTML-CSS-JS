@@ -58,38 +58,64 @@ function cosultarAPI(ciudad, pais) {
 
 	const url = `https://api.openweathermap.org/data/2.5/weather?q=${ciudad},${pais}&appid=${apiKey}`
 
-	// fetch(url).then((respuesta) => respuesta.json().then((resultado) => console.log(resultado)))
-	fetch(url)
-		.then((respuesta) => respuesta.json())
-		.then((resultado) => {
-			// console.log(resultado)
-			limpiarHTML()
+	spinner() //mostrar spinner de carga
 
-			if (resultado.cod === '404') {
-				mostrarError('Localización no encontrada')
-				return
-			}
+	setTimeout(() => {
+		fetch(url)
+			.then((respuesta) => respuesta.json())
+			.then((resultado) => {
+				limpiarHTML()
 
-			//imprimir datos en HTML
-			mostrarClima(resultado)
-		})
+				if (resultado.cod === '404') {
+					mostrarError('Localización no encontrada')
+					return
+				}
+
+				//imprimir datos en HTML
+				mostrarClima(resultado)
+			})
+	}, 500)
 }
 
 function mostrarClima(datos) {
 	const {
+		name,
 		main: { temp, temp_max, temp_min },
+		weather,
 	} = datos
 
 	const tempC = convertirCelsius(temp)
+	const max = convertirCelsius(temp_max)
+	const min = convertirCelsius(temp_min)
+
+	const icono = document.createElement('div')
+	icono.innerHTML = `<img src="https://openweathermap.org/img/wn/${weather[0].icon}@2x.png"
+	alt="weather icon" />`
+
+	const nombreCiudad = document.createElement('p')
+	nombreCiudad.textContent = `${name.charAt(0).toUpperCase() + name.slice(1)}`
+	nombreCiudad.classList.add('font-bold', 'text-4xl')
 
 	const actual = document.createElement('p')
 	actual.innerHTML = `${tempC} &#8451;`
 	// el codigo "&#8451;" es una entidad para poner el simbolo de " ºC "
 	actual.classList.add('font-bold', 'text-6xl')
 
+	const temperaturaMax = document.createElement('p')
+	temperaturaMax.innerHTML = `Max: ${max} &#8451;`
+	temperaturaMax.classList.add('text-xl')
+
+	const temperaturaMin = document.createElement('p')
+	temperaturaMin.innerHTML = `Min: ${min} &#8451;`
+	temperaturaMin.classList.add('text-xl')
+
 	const resultadoDiv = document.createElement('div')
-	actual.classList.add('text-center', 'text-white')
+	resultadoDiv.classList.add('text-center', 'text-white')
+	resultadoDiv.appendChild(icono)
+	resultadoDiv.appendChild(nombreCiudad)
 	resultadoDiv.appendChild(actual)
+	resultadoDiv.appendChild(temperaturaMax)
+	resultadoDiv.appendChild(temperaturaMin)
 	resultado.appendChild(resultadoDiv)
 }
 
@@ -100,4 +126,27 @@ function limpiarHTML() {
 	while (resultado.firstChild) {
 		resultado.removeChild(resultado.firstChild)
 	}
+}
+
+function spinner() {
+	limpiarHTML()
+
+	const divSpinner = document.createElement('div')
+	divSpinner.classList.add('sk-fading-circle')
+	divSpinner.innerHTML = `
+		<div class="sk-circle1 sk-circle"></div>
+		<div class="sk-circle2 sk-circle"></div>
+		<div class="sk-circle3 sk-circle"></div>
+		<div class="sk-circle4 sk-circle"></div>
+		<div class="sk-circle5 sk-circle"></div>
+		<div class="sk-circle6 sk-circle"></div>
+		<div class="sk-circle7 sk-circle"></div>
+		<div class="sk-circle8 sk-circle"></div>
+		<div class="sk-circle9 sk-circle"></div>
+		<div class="sk-circle10 sk-circle"></div>
+		<div class="sk-circle11 sk-circle"></div>
+		<div class="sk-circle12 sk-circle"></div>
+	`
+
+	resultado.appendChild(divSpinner)
 }
