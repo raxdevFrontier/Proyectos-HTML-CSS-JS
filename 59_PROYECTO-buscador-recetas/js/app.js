@@ -93,7 +93,6 @@ function iniciarApp() {
 	}
 
 	function mostrarRecetaModal(receta) {
-		console.log(receta)
 		const { idMeal, strInstructions, strMeal, strMealThumb } = receta
 
 		const modalTitle = document.querySelector('.modal .modal-title')
@@ -104,7 +103,31 @@ function iniciarApp() {
             <img class="img-fluid" src="${strMealThumb}" alt="imagen receta ${strMeal}" />
             <h3 class="my-3">Instrucciones:</h3>
             <p>${strInstructions}</p>
+            <h3 class="my-3">Ingredientes:</h3>
         `
+
+		const listGroup = document.createElement('ul')
+		listGroup.classList.add('list-group')
+
+		//mostrar ingredientes y cantidades
+		console.log(receta)
+		for (let i = 0; i <= 20; i++) {
+			console.log(receta[`strIngredient${i}`])
+			if (receta[`strIngredient${i}`]) {
+				const ingrediente = receta[`strIngredient${i}`]
+				const cantidad = receta[`strMeasure${i}`]
+
+				const ingredienteLi = document.createElement('li')
+				ingredienteLi.classList.add('list-group-item')
+				ingredienteLi.textContent = `${ingrediente} - ${cantidad}`
+
+				listGroup.appendChild(ingredienteLi)
+			}
+		}
+
+		modalBody.appendChild(listGroup)
+
+		//mostrar el modal
 		modal.show()
 	}
 
