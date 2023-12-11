@@ -1,5 +1,10 @@
 const resultado = document.querySelector('#resultado')
 const formulario = document.querySelector('#formulario')
+const paginacionDiv = document.querySelector('#paginacion')
+
+const registrosPorPagina = 40
+let totalPaginas
+let iterador
 
 window.onload = () => {
 	formulario.addEventListener('submit', validarFormulario)
@@ -51,10 +56,24 @@ function mostrarAlerta(mensaje) {
 
 function buscarImagenes(termino) {
 	const key = '41197155-baa9cbb219375781f91ae1579'
-	const url = `https://pixabay.com/api/?key=${key}&q=${termino}&per_page=50`
+	const url = `https://pixabay.com/api/?key=${key}&q=${termino}&per_page=${registrosPorPagina}`
 	fetch(url)
 		.then((respuesta) => respuesta.json())
-		.then((resultado) => mostrarImagenes(resultado.hits))
+		.then((resultado) => {
+			totalPaginas = calcularPaginas(resultado.totalHits)
+			mostrarImagenes(resultado.hits)
+		})
+}
+
+//GENERADOR que va a registrar la cantidad de elementos segun las paginas
+function* crearPaginador(total) {
+	for (let i = 1; i <= total; i++) {
+		yield i
+	}
+}
+
+function calcularPaginas(total) {
+	return parseInt(Math.ceil(total / registrosPorPagina))
 }
 
 function mostrarImagenes(imagenes) {
@@ -93,6 +112,39 @@ function mostrarImagenes(imagenes) {
         </div>
         `
 	})
+
+	//limpiar paginador previo
+	limpiarHTML(paginacionDiv)
+
+	imprimirPaginador()
+}
+
+function imprimirPaginador() {
+	iterador = crearPaginador(totalPaginas)
+
+	while (true) {
+		const { value, done } = iterador.next()
+		if (done) return
+
+		//En caso de que 'done' = false -> generar un boton por cada elemento en ele generador
+		const boton = document.createElement('a')
+		boton.href = '#'
+		boton.dataset.pagina = value
+		boton.textContent = value
+		boton.classList.add(
+			'siguiente',
+			'bg-yellow-400',
+			'px-4',
+			'py-1',
+			'mr-2',
+			'font-bold',
+			'mb-10',
+			'uppercase',
+			'rounded'
+		)
+
+		paginacionDiv.appendChild(boton)
+	}
 }
 
 function limpiarHTML(selector) {
