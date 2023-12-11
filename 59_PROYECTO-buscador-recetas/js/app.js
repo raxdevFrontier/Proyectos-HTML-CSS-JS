@@ -110,9 +110,7 @@ function iniciarApp() {
 		listGroup.classList.add('list-group')
 
 		//mostrar ingredientes y cantidades
-		console.log(receta)
 		for (let i = 0; i <= 20; i++) {
-			console.log(receta[`strIngredient${i}`])
 			if (receta[`strIngredient${i}`]) {
 				const ingrediente = receta[`strIngredient${i}`]
 				const cantidad = receta[`strMeasure${i}`]
@@ -134,7 +132,24 @@ function iniciarApp() {
 		//botones de cerrar y favorito
 		const btnFavorito = document.createElement('button')
 		btnFavorito.classList.add('btn', 'btn-danger', 'col') //con el 'col' hacemos que ambos botones midan lo mismo
-		btnFavorito.textContent = 'Guardar Favorito'
+		btnFavorito.textContent = existeStorage(idMeal) ? 'Eliminar Favorito' : 'Guardar Favorito'
+
+		//loaclStorage
+		btnFavorito.onclick = function () {
+			if (existeStorage(idMeal)) {
+				eliminarFavorito(idMeal)
+				btnFavorito.textContent = 'Guardar Favorito'
+				mostrarToast('Receta eliminada')
+				return
+			}
+			agregarFavorito({
+				id: idMeal,
+				titulo: strMeal,
+				imagen: strMealThumb,
+			})
+			btnFavorito.textContent = 'Eliminar Favorito'
+			mostrarToast('Receta guardada en favoritos')
+		}
 
 		const btnCerrarModal = document.createElement('button')
 		btnCerrarModal.classList.add('btn', 'btn-secondary', 'col')
@@ -150,6 +165,31 @@ function iniciarApp() {
 		modal.show()
 	}
 
+	function agregarFavorito(receta) {
+		const favoritos = JSON.parse(localStorage.getItem('favoritos')) ?? []
+		//El '??' hace que si la parte iquierda de la expresion es 'null' entonces coja el valor de la derecha
+		localStorage.setItem('favoritos', JSON.stringify([...favoritos, receta]))
+	}
+
+	function eliminarFavorito(id) {
+		const favoritos = JSON.parse(localStorage.getItem('favoritos')) ?? []
+		const nuevosFavoritos = favoritos.filter((favoritos) => favoritos.id !== id)
+		localStorage.setItem('favoritos', JSON.stringify(nuevosFavoritos))
+	}
+
+	function existeStorage(id) {
+		const favoritos = JSON.parse(localStorage.getItem('favoritos')) ?? []
+		return favoritos.some((favorito) => favorito.id === id)
+	}
+
+	function mostrarToast(mensaje) {
+		const toastDiv = document.querySelector('#toast')
+		const toastBody = document.querySelector('.toast-body')
+		const toast = new bootstrap.Toast(toastDiv)
+		toastBody.textContent = mensaje
+		toast.show()
+	}
+
 	function limpiarHTML(selector) {
 		while (selector.firstChild) {
 			selector.removeChild(selector.firstChild)
@@ -158,5 +198,3 @@ function iniciarApp() {
 }
 
 document.addEventListener('DOMContentLoaded', iniciarApp)
-
-// console.log()
