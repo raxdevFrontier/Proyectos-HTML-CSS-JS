@@ -1,6 +1,7 @@
 # Pasos previos al proyecto
 
 1- Instalar "NodeJS"
+
 2- instalar "json-server" con el comando:
 
     npm i -g json-server
