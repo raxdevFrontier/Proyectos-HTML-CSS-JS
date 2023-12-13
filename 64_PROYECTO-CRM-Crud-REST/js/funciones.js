@@ -38,3 +38,7 @@ export function mostrarAlerta(mensaje, tipo) {
 		}, 3000)
 	}
 }
+
+export function validar(obj) {
+	return !Object.values(obj).every((input) => input !== '')
+}

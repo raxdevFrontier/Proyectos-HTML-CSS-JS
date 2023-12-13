@@ -1,4 +1,5 @@
-import { obtenerCliente } from './API.js'
+import { obtenerCliente, editarCliente } from './API.js'
+import { mostrarAlerta, validar } from './funciones.js'
 ;(function () {
 	const nombreInput = document.querySelector('#nombre')
 	const emailInput = document.querySelector('#email')
@@ -14,6 +15,10 @@ import { obtenerCliente } from './API.js'
 		const cliente = await obtenerCliente(idCliente)
 
 		mostrarCliente(cliente)
+
+		//submit al formulario
+		const formulario = document.querySelector('#formulario')
+		formulario.addEventListener('submit', validarCliente)
 	})
 
 	function mostrarCliente(cliente) {
@@ -23,5 +28,26 @@ import { obtenerCliente } from './API.js'
 		emailInput.value = email
 		telefonoInput.value = telefono
 		empresaInput.value = empresa
+		idInput.value = id
+	}
+
+	function validarCliente(e) {
+		e.preventDefault()
+
+		const cliente = {
+			nombre: nombreInput.value,
+			email: emailInput.value,
+			telefono: telefonoInput.value,
+			empresa: empresaInput.value,
+			id: parseInt(idInput.value),
+		}
+
+		if (validar(cliente)) {
+			mostrarAlerta('Todos los campos son obligatorios', 'error')
+			return
+		}
+
+		//reescribe el objeto
+		editarCliente(cliente)
 	}
 })()
