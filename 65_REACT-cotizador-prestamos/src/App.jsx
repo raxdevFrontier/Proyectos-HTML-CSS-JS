@@ -4,7 +4,7 @@ function App() {
 
   return (
     /* Codigo HTML */
-    <h1>Hola Mundo</h1>
+    <h1 className="text-6xl font-extrabold">Hola Mundo</h1>
   )
 }
 
