@@ -9,8 +9,8 @@ function App() {
   function handleChange(e) {
     //Aqui recogemos toda la logica que queremos ejecutar al darse el evento "Change"
     // Y por convenio, este tipo de funciones, se nombran como "handle" + "nombre del evento"
-    // console.log(+e.target.value)
-    console.log(Number(e.target.value))
+    
+    setCantidad(Number(e.target.value))
   }
   /* Codigo JavaScript*/
   return (
@@ -23,6 +23,8 @@ function App() {
         className="w-full h-6 bg-gray-200 accent-lime-500 hover:accent-lime-600" 
         onChange={handleChange}
         />
+
+        <p className='text-center my-10 text-5xl font-extrabold text-indigo-600'>{cantidad}</p>
     </div>
   )
 }
