@@ -1,7 +1,11 @@
+import { useState } from 'react'
 import Header from './components/Header'
 
 function App() {
+  const [cantidad, setCantidad] = useState(100)
 
+  setCantidad(1000) // Esto da error, pero para modificar el state deberia hacerse algo así
+  
   /* Codigo JavaScript*/
   return (
     /* Codigo HTML */
