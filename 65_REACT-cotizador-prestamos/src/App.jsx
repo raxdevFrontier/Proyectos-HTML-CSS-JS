@@ -2,7 +2,11 @@ import { useState } from 'react'
 import Header from './components/Header'
 
 function App() {
-  const [cantidad, setCantidad] = useState(100)
+  const [cantidad, setCantidad] = useState(50)
+
+  const MIN = 0
+  const MAX = 100
+  const STEP = 10
 
   // setCantidad(1000) // Esto da error, pero para modificar el state deberia hacerse algo así
 
@@ -22,6 +26,10 @@ function App() {
         type="range" 
         className="w-full h-6 bg-gray-200 accent-lime-500 hover:accent-lime-600" 
         onChange={handleChange}
+        min={MIN}
+        max={MAX}
+        step={STEP}
+        value={cantidad}
         />
 
         <p className='text-center my-10 text-5xl font-extrabold text-indigo-600'>{cantidad}</p>
